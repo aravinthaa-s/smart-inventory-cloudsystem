@@ -1,0 +1,69 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+env:
+  ACR_NAME: acrsmartinventory
+  RESOURCE_GROUP: rg-smart-inventory-cloud
+  CLUSTER_NAME: aks-smart-inventory
+
+jobs:
+  build-and-push:
+    name: Build and Push Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ env.ACR_NAME }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/backend:${{ github.sha }} ./backend
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/backend:latest ./backend
+          docker push ${{ env.ACR_NAME }}.azurecr.io/backend:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/backend:latest
+
+  deploy:
+    name: Deploy to AKS
+    needs: build-and-push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS Context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy to Kubernetes
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: |
+            kubernetes/deployment.yaml
+          images: |
+            ${{ env.ACR_NAME }}.azurecr.io/backend:${{ github.sha }}
+          strategy: canary
+          percentage: 20
