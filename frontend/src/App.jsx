@@ -66,11 +66,12 @@ function App() {
       try {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser && parsedUser.Username) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setUser(parsedUser);
         } else {
           localStorage.removeItem('user');
         }
-      } catch (e) {
+      } catch {
         localStorage.removeItem('user');
       }
     }
