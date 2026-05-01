@@ -85,5 +85,7 @@ jobs:
         with:
           manifests: |
             kubernetes/deployment.yaml
+            kubernetes/service.yaml
+            kubernetes/ingress.yaml
           images: |
             ${{ env.ACR_NAME }}.azurecr.io/frontend:${{ github.sha }}
