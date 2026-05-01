@@ -1,3 +1,4 @@
+# Re-triggering deployment with service and ingress manifests
 # Forcing clean rebuild with updated resource config
 # Use an official Node.js runtime as a parent image
 FROM node:20-alpine

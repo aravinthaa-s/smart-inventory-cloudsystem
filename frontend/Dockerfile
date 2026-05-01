@@ -1,3 +1,4 @@
+# Re-triggering deployment with service and ingress manifests
 # Triggering frontend build for deployment
 # Build stage
 FROM node:20-alpine AS build
