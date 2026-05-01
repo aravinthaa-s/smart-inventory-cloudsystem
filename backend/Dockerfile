@@ -15,7 +15,7 @@ RUN npm install --production
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 600000
+EXPOSE 5000
 
 # Set environment variables (these should ideally be provided at runtime via docker-compose or K8s)
 ENV PORT=5000
