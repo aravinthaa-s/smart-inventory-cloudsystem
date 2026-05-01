@@ -12,8 +12,8 @@ on:
 
 env:
   ACR_NAME: acrsmartinventory
-  RESOURCE_GROUP: rg-smart-inventory-cloud
-  CLUSTER_NAME: aks-smart-inventory
+  RESOURCE_GROUP: rg-smart-inventorycloud
+  CLUSTER_NAME: aks-smartinventory
 
 jobs:
   build-and-push:
