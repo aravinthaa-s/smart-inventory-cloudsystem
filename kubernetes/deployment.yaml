@@ -21,22 +21,13 @@ spec:
         - containerPort: 5000
         env:
         - name: DB_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: backend-secrets
-              key: db_server
+          value: "smartinventorysql123.database.windows.net"
         - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: backend-secrets
-              key: db_user
+          value: "sqladmin"
         - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: backend-secrets
-              key: db_password
+          value: "Arav1032"
         - name: DB_NAME
-          value: "sqldb-smart-inventory"
+          value: "inventorydbcloud"
         resources:
           requests:
             cpu: "250m"
