@@ -9,7 +9,7 @@ async function uploadBlob(containerName, blobName, content) {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     // Create container if it doesn't exist
     await containerClient.createIfNotExists({ access: 'container' });
-    
+
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     await blockBlobClient.upload(content, content.length);
     return blockBlobClient.url;
@@ -21,7 +21,7 @@ async function uploadBlob(containerName, blobName, content) {
 
 // Azure OpenAI Initialization
 const openaiClient = new OpenAIClient(
-  process.env.AZURE_OPENAI_ENDPOINT || "https://placeholder.openai.azure.com/", 
+  process.env.AZURE_OPENAI_ENDPOINT || "https://placeholder.openai.azure.com/",
   new AzureKeyCredential(process.env.AZURE_OPENAI_KEY || "placeholder")
 );
 const deploymentId = process.env.AZURE_OPENAI_DEPLOYMENT_NAME || "gpt-35-turbo";
@@ -32,7 +32,7 @@ async function generateAISuggestions(prompt, stockContext) {
       { role: "system", content: "You are an AI Inventory Assistant. Provide insights on low stock, demand forecasting, reorder suggestions, and inventory summary. Use the provided context." },
       { role: "user", content: `Context: ${stockContext}\n\nQuery: ${prompt}` }
     ];
-    
+
     const result = await openaiClient.getChatCompletions(deploymentId, messages);
     return result.choices[0].message.content;
   } catch (error) {

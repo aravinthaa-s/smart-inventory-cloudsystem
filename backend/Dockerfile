@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN npm install --production
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 5000
+EXPOSE 600000
 
 # Set environment variables (these should ideally be provided at runtime via docker-compose or K8s)
 ENV PORT=5000
