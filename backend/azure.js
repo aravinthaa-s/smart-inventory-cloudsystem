@@ -14,7 +14,7 @@ async function uploadBlob(containerName, blobName, content) {
     await blockBlobClient.upload(content, content.length);
     return blockBlobClient.url;
   } catch (error) {
-    console.error("Error uploading to Blob:", error);
+    console.error("Error uploading:", error);
     return null;
   }
 }
